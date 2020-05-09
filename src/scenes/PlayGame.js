@@ -349,7 +349,7 @@ class PlayGame extends Phaser.Scene {
   };
 
   check_for_winner = (score) => {
-    if (score >= 50) {
+    if (score >= 100) {
       let players = [{ name: this.name, score: this.score }];
       for (let other in this.others) {
         players.push({
