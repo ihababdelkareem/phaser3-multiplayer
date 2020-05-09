@@ -1,3 +1,4 @@
+var { Constants } = require("./constants");
 const http = require("http");
 const express = require("express");
 const socketio = require("socket.io");
@@ -10,7 +11,7 @@ app.use(express.static("build"));
 const getRndInteger = (min, max) =>
   Math.floor(Math.random() * (max - min)) + min;
 var numberOfConnectedUsers = 0;
-var coin = { x: getRndInteger(50, 750), y: getRndInteger(50, 550) };
+var coin = { x: getRndInteger(50, Constants.WIDTH), y: getRndInteger(50, 550) };
 var all_users = {}; //store user info, maps socket_id -> user object.
 io.on("connect", (socket) => {
   numberOfConnectedUsers++;
@@ -46,6 +47,8 @@ io.on("connect", (socket) => {
       angle: angle,
     });
   });
+
+  socket.on("shot", (p, c) => socket.broadcast.emit("other_shot"));
 
   /*
   When a user collects the coin, let the others

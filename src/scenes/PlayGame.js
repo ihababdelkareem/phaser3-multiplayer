@@ -4,12 +4,16 @@ import Spaceship from "../assets/spaceship.svg";
 import BulletIcon from "../assets/bullet.svg";
 import Bullets from "./Bullets";
 import Explosion from "../assets/explosion.png";
+import ExplosionSound from "../assets/exp.m4a";
+import ShotSound from "../assets/shot.mp3";
+import CoinSound from "../assets/coin_collect.wav";
+import Constants from "../constants";
 import io from "socket.io-client";
 class PlayGame extends Phaser.Scene {
   init(name) {
     // Server endpoints (dev and prod)
     if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
-      this.ENDPOINT = "localhost:5000";
+      this.ENDPOINT = "192.168.1.107:5000";
     } else {
       this.ENDPOINT = "https://phaser3-game-react.herokuapp.com";
     }
@@ -21,8 +25,8 @@ class PlayGame extends Phaser.Scene {
     );
     this.score = 0;
     this.others = {}; //to store other players
-    this.x = Phaser.Math.Between(50, 750); // random initial x,y coordinates
-    this.y = Phaser.Math.Between(50, 550);
+    this.x = Phaser.Math.Between(50, Constants.WIDTH - 50); // random initial x,y coordinates
+    this.y = Phaser.Math.Between(50, Constants.HEIGHT - 50);
   }
   preload() {
     //the sprites we need
@@ -34,6 +38,9 @@ class PlayGame extends Phaser.Scene {
     this.load.image("coin", Coin);
     this.load.image("ship", Spaceship);
     this.load.image("bullet", BulletIcon);
+    this.load.audio("explosion", ExplosionSound);
+    this.load.audio("shot", ShotSound);
+    this.load.audio("coin", CoinSound);
   }
   create() {
     var config = {
@@ -45,6 +52,10 @@ class PlayGame extends Phaser.Scene {
       }),
       frameRate: 20,
     };
+
+    this.explosion_sound = this.sound.add("explosion");
+    this.shot_sound = this.sound.add("shot");
+    this.coin_sound = this.sound.add("coin");
 
     this.anims.create(config);
     this.ship = this.get_new_spaceship(
@@ -134,6 +145,7 @@ class PlayGame extends Phaser.Scene {
     Listen for changes in the coordinates of the coin.
     */
     this.socket.on("coin_changed", (params, callback) => {
+      this.coin_sound.play();
       this.coin.x = params.coin.x;
       this.coin.y = params.coin.y;
     });
@@ -148,6 +160,7 @@ class PlayGame extends Phaser.Scene {
       this.animate_explosion(exploded_user_id);
     });
 
+    this.socket.on("other_shot", (p, c) => this.shot_sound.play());
     /*
     Listen for disconnections of others.
     */
@@ -200,7 +213,11 @@ class PlayGame extends Phaser.Scene {
       this.bullets.fireBullet(
         this.ship.cont.x,
         this.ship.cont.y - 5,
-        this.ship.ship.angle
+        this.ship.ship.angle,
+        () => {
+          this.socket.emit("shot");
+          this.shot_sound.play();
+        }
       );
     }
     this.emit_coordinates();
@@ -257,8 +274,9 @@ class PlayGame extends Phaser.Scene {
   by this callback.
   */
   fire = (coin) => {
-    coin.x = Phaser.Math.Between(20, 780);
-    coin.y = Phaser.Math.Between(20, 580);
+    this.coin_sound.play();
+    coin.x = Phaser.Math.Between(20, Constants.WIDTH - 20);
+    coin.y = Phaser.Math.Between(20, Constants.HEIGHT - 20);
     this.score += 5;
     this.ship.score_text.setText(`${this.name}: ${this.score}`);
     this.socket.emit("update_coin", {
@@ -321,16 +339,17 @@ class PlayGame extends Phaser.Scene {
       this.ship.score_text.setText(`${this.name}: ${this.score}`);
       setTimeout(() => {
         ship.setActive(true);
-      }, 1000);
+      }, 2000);
     } else {
       ship = this.others[id].ship.cont;
     }
     var boom = this.add.sprite(ship.x, ship.y, "boom");
     boom.anims.play("explode");
+    this.explosion_sound.play();
   };
 
   check_for_winner = (score) => {
-    if (score >= 100) {
+    if (score >= 50) {
       let players = [{ name: this.name, score: this.score }];
       for (let other in this.others) {
         players.push({

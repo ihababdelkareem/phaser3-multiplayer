@@ -12,7 +12,7 @@ export default class Welcome extends Phaser.Scene {
   }
   create() {
     this.welcome_text = `Welcome, enter your name\n\n`;
-    this.text = this.add.text(250, 250, this.welcome_text, {
+    this.text = this.add.text(450, 250, this.welcome_text, {
       color: "#00ff00",
       align: "center",
       fontSize: "20px",

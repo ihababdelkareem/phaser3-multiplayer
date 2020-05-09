@@ -12,7 +12,7 @@ export default class Winner extends Phaser.Scene {
       this.winner_text += `${this.players[p].name}: ${this.players[p].score}\n`;
     }
     this.winner_text += "\n\nPress Enter to play again";
-    this.text = this.add.text(250, 50, this.winner_text, {
+    this.text = this.add.text(450, 50, this.winner_text, {
       color: "#00ff00",
       align: "center",
       fontSize: "20px",

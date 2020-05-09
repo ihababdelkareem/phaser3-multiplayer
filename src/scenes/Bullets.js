@@ -5,7 +5,7 @@ export default class Bullets extends Phaser.Physics.Arcade.Group {
     super(scene.physics.world, scene);
     this.disabled = false;
     this.createMultiple({
-      frameQuantity: 5,
+      frameQuantity: 2,
       key: "bullet",
       active: false,
       visible: false,
@@ -13,10 +13,11 @@ export default class Bullets extends Phaser.Physics.Arcade.Group {
     });
   }
 
-  fireBullet(x, y, angle) {
+  fireBullet(x, y, angle, shot_fired) {
     let bullet = this.getFirstDead(false);
     if (bullet) {
       bullet.fire(x, y, angle);
+      shot_fired();
     }
   }
 

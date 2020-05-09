@@ -4,12 +4,11 @@ import Phaser from "phaser";
 import PlayGame from "./scenes/PlayGame";
 import Welcome from "./scenes/Welcome";
 import Winner from "./scenes/Winner";
-import React from "react";
-import App from "./App";
+import Constants from "./constants";
 export const config = {
   type: Phaser.AUTO,
-  width: 800,
-  height: 600,
+  width: Constants.WIDTH,
+  height: Constants.HEIGHT,
   physics: { default: "arcade" },
   backgroundColor: "#202830",
 };
