@@ -50,7 +50,7 @@ class PlayGame extends Phaser.Scene {
         end: 23,
         first: 23,
       }),
-      frameRate: 20,
+      frameRate: 50,
     };
 
     this.explosion_sound = this.sound.add("explosion");
@@ -155,7 +155,7 @@ class PlayGame extends Phaser.Scene {
       const bullet_index = params.bullet_index;
       const exploded_user_id = params.exploded_user_id;
       if (other_id === this.socket.id) {
-        this.bullets.children.entries[bullet_index].set_bullet(false);
+        this.bullets.children.entries[bullet_index].setVisible(false);
       }
       this.animate_explosion(exploded_user_id);
     });
@@ -339,7 +339,7 @@ class PlayGame extends Phaser.Scene {
       this.ship.score_text.setText(`${this.name}: ${this.score}`);
       setTimeout(() => {
         ship.setActive(true);
-      }, 2000);
+      }, 1000);
     } else {
       ship = this.others[id].ship.cont;
     }
