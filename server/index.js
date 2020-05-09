@@ -33,13 +33,17 @@ io.on("connect", (socket) => {
     const y = params.y;
     const score = params.score;
     const name = params.name;
-    all_users[socket.id] = { x, y, score, name };
+    const angle = params.angle;
+    const bullets = params.bullets;
+    all_users[socket.id] = { x, y, score, name, bullets, angle };
     socket.broadcast.emit("to_others", {
       id: socket.id,
       score: score,
       x: x,
       y: y,
       name: name,
+      bullets: bullets,
+      angle: angle,
     });
   });
 
@@ -51,6 +55,14 @@ io.on("connect", (socket) => {
     coin = { x: params.x, y: params.y };
     socket.broadcast.emit("coin_changed", {
       coin,
+    });
+  });
+
+  socket.on("collision", (params, callback) => {
+    socket.broadcast.emit("other_collision", {
+      bullet_user_id: params.bullet_user_id,
+      bullet_index: params.bullet_index,
+      exploded_user_id: socket.id,
     });
   });
 
