@@ -1,5 +1,5 @@
 # Phaser3 Multiplayer Game
-![Game Demo](game.gif)
+![Game Demo](updated.gif)
 ### Usage
 
 Make sure to have node.js installed.
