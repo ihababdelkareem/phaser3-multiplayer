@@ -1,3 +1,6 @@
+/*
+A sprite-group based class , to manage a bullet store to use for each spaceship
+*/
 import Phaser from "phaser";
 import Bullet from "./Bullet";
 export default class Bullets extends Phaser.Physics.Arcade.Group {
@@ -5,7 +8,7 @@ export default class Bullets extends Phaser.Physics.Arcade.Group {
     super(scene.physics.world, scene);
     this.disabled = false;
     this.createMultiple({
-      frameQuantity: 1,
+      frameQuantity: 2,
       key: "bullet",
       active: false,
       visible: false,

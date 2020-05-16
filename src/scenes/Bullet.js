@@ -1,3 +1,7 @@
+/*
+A bullet class to represent the bullet sprite and its main functionalities 
+*/
+
 import Phaser from "phaser";
 import Constants from "../constants";
 export default class Bullet extends Phaser.Physics.Arcade.Sprite {
