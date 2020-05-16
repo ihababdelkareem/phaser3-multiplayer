@@ -13,7 +13,7 @@ class PlayGame extends Phaser.Scene {
   init(name) {
     // Server endpoints (dev and prod)
     if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
-      this.ENDPOINT = "192.168.1.107:5000";
+      this.ENDPOINT = "localhost:5000";
     } else {
       this.ENDPOINT = "https://phaser3-game-react.herokuapp.com";
     }
@@ -150,6 +150,9 @@ class PlayGame extends Phaser.Scene {
       this.coin.y = params.coin.y;
     });
 
+    /*
+    Listen for other players being shot, to animate an explosion on their spaceship sprite.
+    */
     this.socket.on("other_collision", (params, callback) => {
       const other_id = params.bullet_user_id;
       const bullet_index = params.bullet_index;
@@ -160,7 +163,11 @@ class PlayGame extends Phaser.Scene {
       this.animate_explosion(exploded_user_id);
     });
 
+    /*
+    Play a shot sound whenever another player shoots a bullet.
+    */
     this.socket.on("other_shot", (p, c) => this.shot_sound.play());
+
     /*
     Listen for disconnections of others.
     */
@@ -286,6 +293,10 @@ class PlayGame extends Phaser.Scene {
     this.check_for_winner(this.score);
   };
 
+  /*
+  Create bullet objects for enemies (for new enemies or new clients), then create a collider callback
+  in case any of the bullets ever hits the client.
+  */
   get_enemy_bullets = (bullets, id) => {
     var enemy_bullets = new Bullets(this);
     for (let i = 0; i < bullets.length; i++) {
@@ -315,6 +326,9 @@ class PlayGame extends Phaser.Scene {
     return enemy_bullets;
   };
 
+  /*
+  Update all the sprites of the enemy bullets based on enemy updates read by socket.
+  */
   update_enemy_bullets = (id, bullets) => {
     var bullet_sprites = this.others[id].bullets;
     for (var i = 0; i < bullets.length; i++) {
@@ -326,10 +340,17 @@ class PlayGame extends Phaser.Scene {
     }
   };
 
+  /*
+  The client here emits to all the other players that they have been hit by a bullet.
+  */
   emmit_collision = (bullet_user_id, bullet_index) => {
     this.socket.emit("collision", { bullet_user_id, bullet_index });
   };
 
+  /*
+  Animate the explosion of the player that got hit (checks if player is the client or another).
+  The player that gets shot is disabled for 1 sec.
+  */
   animate_explosion = (id) => {
     var ship;
     if (id === "0") {
@@ -348,6 +369,9 @@ class PlayGame extends Phaser.Scene {
     this.explosion_sound.play();
   };
 
+  /*
+  If any player exceeds 100 points , the game is over and the scoreboard is shown.
+  */
   check_for_winner = (score) => {
     if (score >= 100) {
       let players = [{ name: this.name, score: this.score }];

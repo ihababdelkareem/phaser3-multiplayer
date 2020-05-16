@@ -22,8 +22,5 @@ export default class Winner extends Phaser.Scene {
     if (this.enter.isDown) {
       this.scene.start("playgame");
     }
-    /*
-    Poll for keyboard keys to display name, and for enter to go to game scene.
-    */
   }
 }
