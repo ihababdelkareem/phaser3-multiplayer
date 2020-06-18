@@ -18,4 +18,4 @@ $ npm run build
 $ npm run server
 ```
 ### Access deployed game
-###### https://www.phasershooter.com
+###### http://www.phasershooter.com
