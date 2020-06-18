@@ -18,4 +18,4 @@ $ npm run build
 $ npm run server
 ```
 ### Access deployed game
-###### https://phaser3-game-react.herokuapp.com/
+###### https://www.phasershooter.com
