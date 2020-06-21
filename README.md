@@ -17,5 +17,5 @@ For production environments...
 $ npm run build
 $ npm run server
 ```
-### Access deployed game
+### Access game
 ###### http://www.phasershooter.com
