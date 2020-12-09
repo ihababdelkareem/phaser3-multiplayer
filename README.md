@@ -9,13 +9,7 @@ Install the dependencies and start both dev servers.
 $ npm install
 $ npm run dev
 ```
-Open multiple client tabs to play.
+Open multiple client tabs to play (within a single local network).
 
-For production environments...
-
-```sh
-$ npm run build
-$ npm run server
-```
 ### Access game
 ###### http://www.phasershooter.com
