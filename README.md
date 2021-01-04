@@ -11,7 +11,7 @@ $ npm run dev
 ```
 Open multiple client tabs to play (within a single local network).
 
-In a dev/prod environment, the build directory is served by the node app.
+In a dev/prod environment, the client is bundled into build directory and is served by the node app as static content.
 
 ```sh
 $ npm install
