@@ -1,4 +1,4 @@
-# Phaser3 Multiplayer Game
+# Phaser3 Multiplayer Shooter
 ![Game Demo](updated.gif)
 ### Usage
 
