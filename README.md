@@ -11,5 +11,13 @@ $ npm run dev
 ```
 Open multiple client tabs to play (within a single local network).
 
+In a dev/prod environment, the build directory is served by the node app.
+
+```sh
+$ npm install
+$ npm run build
+$ npm run server
+```
+
 ### Access game
 ###### http://www.phasershooter.com
