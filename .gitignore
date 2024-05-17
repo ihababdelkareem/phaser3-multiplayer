@@ -5,6 +5,7 @@
 /.pnp
 .pnp.js
 /to_heroku
+/dist
 # testing
 /coverage
 
