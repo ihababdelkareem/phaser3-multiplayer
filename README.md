@@ -7,17 +7,19 @@ Install the dependencies and start both dev servers.
 
 ```sh
 $ npm install
-$ npm run dev
 ```
+
 Open multiple client tabs to play (within a single local network).
 
-In a dev/prod environment, the client is bundled into build directory and is served by the node app as static content.
+In a dev/prod environment, the client is bundled into a dist directory and is served by the node app as static content.
 
+First build client, and run server
 ```sh
-$ npm install
 $ npm run build
-$ npm run server
+$ npm run start
 ```
 
-### Access game
-###### https://phaser3-game-react.herokuapp.com/
+Then access through `localhost:5000` (Try with multiple client tabs)
+
+### Access live game
+###### https://phaser-mp-app-a56a58a9a832.herokuapp.com/

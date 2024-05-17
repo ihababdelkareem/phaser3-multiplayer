@@ -3,16 +3,24 @@ const http = require("http");
 const express = require("express");
 const socketio = require("socket.io");
 const cors = require("cors");
+
+// init express server, socket io server, and serve static content from `dist`
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
 app.use(cors());
-app.use(express.static("build"));
+app.use(express.static("dist"));
+
 const getRndInteger = (min, max) =>
   Math.floor(Math.random() * (max - min)) + min;
+
 var numberOfConnectedUsers = 0;
-var coin = { x: getRndInteger(50, Constants.WIDTH), y: getRndInteger(50, 550) };
-var all_users = {}; //store user info, maps socket_id -> user object.
+var coin = { x: getRndInteger(50, Constants.WIDTH), y: getRndInteger(50, Constants.HEIGHT) };
+
+//store user info, maps socket_id -> user object.
+var all_users = {}; 
+
+
 io.on("connect", (socket) => {
   numberOfConnectedUsers++;
   /*
@@ -81,7 +89,11 @@ io.on("connect", (socket) => {
     delete all_users[socket.id];
   });
 });
-app.get("/", (req, res) => res.send(""));
+
+
+app.get("/health", (req, res) => res.send(`${process.env.NODE_ENV}`));
+
+// Expose server on 5000
 server.listen(process.env.PORT || 5000, () =>
   console.log(`Server has started.`)
 );
